@@ -9,24 +9,19 @@
         }
     }
 
-const Transaction = {
-    all: [ 
-        {   
-            description: 'luz',
-            amount: -50000,
-            date:'02/02/2021'
-        },
-        {   
-            description: 'Website',
-            amount: 500000,
-            date:'02/02/2021'
-        },
-        {   
-            description: 'Internet',
-            amount: -20000,
-            date:'02/02/2021'
+const Storage = {
+    get(){
+        return JSON.parse(localStorage.getItem('dev.finances:transactios'))|| []
+    },
+    set(transactions){
+        localStorage.setItem
+        ("dev.finances:transactios",
+        JSON.stringify(transactions))
         }
-    ],
+}
+
+const Transaction = {
+    all: Storage.get(),
 
     add(transaction){
         Transaction.all.push(transaction)
@@ -73,7 +68,7 @@ const DOM = {
         tr.dataset.index = index;
         DOM.TransactionsContainer.appendChild(tr)
     },
-    innerHTMLTransaction(transactions,index){
+    innerHTMLTransaction(transactions,index ){
         const CSSclass = transactions.amount > 0 ? "income" : "expense"
         const amount = Utils.formatCurrency(transactions.amount)
         const HTML =`
@@ -189,7 +184,8 @@ const App ={
             Transaction.all.forEach((transaction,index)=>{
            DOM.addTransaction(transaction,index)
             })
-            DOM.updateBalance()  
+            DOM.updateBalance()
+        Storage.set(Transaction.all);  
     },
     reload(){
         DOM.clearTransactions();

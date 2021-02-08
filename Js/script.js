@@ -70,9 +70,10 @@ const DOM = {
     addTransaction(transactions,index){
         const tr = document.createElement('tr')
         tr.innerHTML = DOM.innerHTMLTransaction(transactions)
+        tr.dataset.index = index;
         DOM.TransactionsContainer.appendChild(tr)
     },
-    innerHTMLTransaction(transactions){
+    innerHTMLTransaction(transactions,index){
         const CSSclass = transactions.amount > 0 ? "income" : "expense"
         const amount = Utils.formatCurrency(transactions.amount)
         const HTML =`
@@ -80,7 +81,7 @@ const DOM = {
                         <td class="${CSSclass}">${amount}</td>
                         <td class="date">${transactions.date}</td>
                         <th>
-                            <img src="./assets/minus.svg" alt="remover transação" srcset="">
+                            <img  onclick ="Transaction.remove(${index})" src="./assets/minus.svg" alt="remover transação" srcset="">
                         </th>
             `
             return HTML
@@ -111,6 +112,15 @@ const Utils = {
             currency: "BRL"
         })
         return  signal+ value
+    },
+    formatAmount(value){
+        value = Number(value)*100;
+        return value;
+                
+    },
+    formatDate(date){
+        const splittedDate = date.split("-")
+        return `${splittedDate[2]}/${splittedDate[1]}/${splittedDate[0]}`
     }
 }
 
@@ -126,15 +136,18 @@ const Form = {
             date: Form.date.value
         }
     },
-    /*
-    saveForm(){
-        console.log('salvar')
+    formatValues(){
+        let {description, amount, date} = Form.getValues();
+        amount = Utils.formatAmount(amount)
+
+        date = Utils.formatDate(date);
+        return{
+            description,
+            amount,
+            date,
+        }
     },
     
-    formatData(){
-        
-    },
-    */
     validateFiels(){  
         
         const {description, amount, date} = Form.getValues();
@@ -144,21 +157,26 @@ const Form = {
                 throw new Error("Preencha todos os campos");
             }
     },
+    clearFields(){
+        Form.description.value =""
+        Form.amount.value =""
+        Form.date.value =""
+    },
     submit(event){
         
         try{
             event.preventDefault()  
         
             Form.validateFiels();//Validar se todas os campos foram preenchidos
-            /*
-            Form.formatData();//formatar os dados para salvar
             
-            Form.saveForm();//salvar
-            */
+            const transaction = Form.formatValues();//formatar os dados para salvar
+            
+            Transaction.add(transaction)//salvar e atualiza a aplicacao
+            
+            Form.clearFields();//apagar os dados do formulario
 
-            //apagar os dados do formulario
-            //modal feche
-            //atualizar aplicacao
+            Modal.close(); //modal feche
+            
         }catch(error){
             alert(error.message)
         }
@@ -168,8 +186,8 @@ const Form = {
 
 const App ={
     init(){
-            Transaction.all.forEach((transaction)=>{
-            DOM.addTransaction(transaction)
+            Transaction.all.forEach((transaction,index)=>{
+           DOM.addTransaction(transaction,index)
             })
             DOM.updateBalance()  
     },

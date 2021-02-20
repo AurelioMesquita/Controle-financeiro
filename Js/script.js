@@ -1,4 +1,32 @@
-    const Modal = {
+const ThemeManager = {
+    switchTheme() {
+  
+      let COLOR_THEME = switchThemeButton.checked ? 'dark' : 'light';
+  
+      if (COLOR_THEME === 'dark') {
+        document.querySelector("body").classList.add('dark');
+      } else {
+        document.querySelector("body").classList.remove('dark')
+      }
+  
+    },
+  
+    initTheme() {
+  
+      let COLOR_THEME = window.matchMedia("(prefers-color-scheme: light)").matches ? 'light' : 'dark';
+        console.log(COLOR_THEME)
+      if (COLOR_THEME === "dark") {
+        document.querySelector("body").classList.add('dark');
+        switchThemeButton.checked = true
+      } else {
+        document.querySelector("body").classList.remove('dark')
+        switchThemeButton.checked = false
+      }
+      return COLOR_THEME
+    }
+  }
+
+const Modal = {
         open(){
             document.querySelector('.modal-overlay')
             .classList.add('active')
@@ -110,7 +138,7 @@ const Utils = {
     },
     formatAmount(value){
         value = Number(value)*100;
-        return value;
+        return Math.round(value);
                 
     },
     formatDate(date){
@@ -185,7 +213,9 @@ const App ={
            DOM.addTransaction(transaction,index)
             })
             DOM.updateBalance()
-        Storage.set(Transaction.all);  
+        Storage.set(Transaction.all); 
+        ThemeManager.initTheme()
+ 
     },
     reload(){
         DOM.clearTransactions();
@@ -193,4 +223,14 @@ const App ={
     }
 }
 
+const switchThemeButton = document.querySelector(".checkbox");
+console.log(switchThemeButton)
+switchThemeButton.addEventListener("click", event => {
+  ThemeManager.switchTheme()
+})
+
 App.init()
+
+
+const body = document.querySelector('body')
+console.log(body)

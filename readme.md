@@ -25,6 +25,10 @@ git clone https://github.com/AurelioMesquita/Controle-financeiro
 
 
 
-## Prints layouts:
+## Print layout:
 
-<img align="center" src="" width="90%"></a>
+<img align="center" src="https://github.com/AurelioMesquita/Controle-financeiro/blob/e7500e2b2ecdd4eb693b61a40ec1a7878d42035e/images/home.png" width="90%"></a>
+
+<img align="center" src="https://github.com/AurelioMesquita/Controle-financeiro/blob/e7500e2b2ecdd4eb693b61a40ec1a7878d42035e/images/home2.png" width="90%"></a>
+
+<img align="center" src="https://github.com/AurelioMesquita/Controle-financeiro/blob/e7500e2b2ecdd4eb693b61a40ec1a7878d42035e/images/Inser%C3%A7%C3%A3o%20de%20nova%20transa%C3%A7%C3%A3o.png" width="90%"></a>
